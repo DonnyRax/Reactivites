@@ -3,3 +3,6 @@ git add README.md
 git commit -m "first commit"
 git remote add origin https://github.com/DonnyRax/Reactivites.git
 git push -u origin master
+
+ dotnet run -p API/
+ dotnet tool install --global dotnet-ef
