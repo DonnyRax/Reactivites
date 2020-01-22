@@ -1,15 +1,12 @@
-using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Application.Activities;
 using Application.Errors;
+using Application.Interfaces;
 using Domain;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-using Persistence;
 
 namespace Application.User
 {
@@ -34,29 +31,30 @@ namespace Application.User
         {
             private readonly UserManager<AppUser> _userManager;
             private readonly SignInManager<AppUser> _signInManager;
-            public Handler(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+            private readonly IJwtGenerator _jwtGenerator;
+            public Handler(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IJwtGenerator jwtGenerator)
             {
+                _jwtGenerator = jwtGenerator;
                 _signInManager = signInManager;
                 _userManager = userManager;
-
             }
 
             public async Task<User> Handle(Query request, CancellationToken cancellationToken)
             {
                 var user = await _userManager.FindByEmailAsync(request.Email);
 
-                if(user == null)
+                if (user == null)
                     throw new RestException(HttpStatusCode.Unauthorized);
 
                 var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
 
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
                     // TODO: generate token
                     return new User
                     {
                         DisplayName = user.DisplayName,
-                        Token = "This will be a token",
+                        Token = _jwtGenerator.CreateToken(user),
                         Username = user.UserName,
                         Image = null
                     };

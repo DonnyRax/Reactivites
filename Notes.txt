@@ -8,3 +8,5 @@ git push -u origin master
  dotnet tool install --global dotnet-ef
 
  dotnet ef database drop -p Persistence/ -s API/
+
+ dotnet add reference ../Application/
