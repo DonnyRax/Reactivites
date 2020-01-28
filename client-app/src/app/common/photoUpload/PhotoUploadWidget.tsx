@@ -14,7 +14,7 @@ const PhotoUploadWidget = () => {
         URL.revokeObjectURL(file.preview)
       );
     };
-  }, []);
+  }, [files]);
 
   return (
     <Fragment>
