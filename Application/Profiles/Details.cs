@@ -24,7 +24,7 @@ namespace Application.Profiles
 
             public async Task<Profile> Handle(Query request, CancellationToken cancellationToken)
             {
-                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == request.Username);
+                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName.ToLower() == request.Username.ToLower());
 
                 return new Profile
                 {
