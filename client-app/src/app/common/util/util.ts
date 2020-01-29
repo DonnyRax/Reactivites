@@ -16,10 +16,10 @@ export const combineDateandTime = (date: Date, time: Date) => {
 export const setActivityProps = (activity: IActivity, user: IUser) => {
     activity.date = new Date(activity.date);
     activity.isGoing = activity.attendees.some(
-      a => a.username.toLowerCase() === user.username.toLowerCase()
+      a => a.username === user.username
     )
     activity.isHost = activity.attendees.some(
-      a => a.username.toLowerCase() === user.username.toLowerCase() && a.isHost
+      a => a.username === user.username && a.isHost
     )
 
     return activity;
