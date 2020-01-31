@@ -10,3 +10,5 @@ git push -u origin master
  dotnet ef database drop -p Persistence/ -s API/
 
  dotnet add reference ../Application/
+
+ dotnet publish -c Release -o publish --self-contained false Reactivities.sln
